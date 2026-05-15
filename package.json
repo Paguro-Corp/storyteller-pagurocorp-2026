@@ -1,0 +1,14 @@
+{
+  "name": "paguro-storytelling-os",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Herramienta interna para generar briefs estrategicos de contenido high ticket con IA.",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "check": "node --check app.js && node --check server.js && node --check prompts.js"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

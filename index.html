@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paguro Storytelling OS</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="brand-mark">
+        <div class="brand-symbol">P</div>
+        <div>
+          <strong>Paguro OS</strong>
+          <span>Cerebro creativo interno</span>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Principal">
+        <button class="nav-item active" data-view="generator" type="button">
+          <span>Generador</span>
+        </button>
+        <button class="nav-item" data-view="projects" type="button">
+          <span>Proyectos</span>
+        </button>
+        <button class="nav-item" data-view="calendar" type="button">
+          <span>Calendario</span>
+        </button>
+        <button class="nav-item" data-view="library" type="button">
+          <span>Biblioteca</span>
+        </button>
+      </nav>
+
+      <section class="project-switcher" aria-label="Proyecto activo">
+        <label for="projectSelect">Proyecto activo</label>
+        <select id="projectSelect"></select>
+        <button class="secondary full" id="newProjectBtn" type="button">Nuevo proyecto</button>
+      </section>
+
+      <section class="health-panel">
+        <span class="panel-label">Salud estratégica</span>
+        <div class="health-score" id="brandHealth">0%</div>
+        <p id="brandHealthCopy">Carga un proyecto para evaluar consistencia.</p>
+      </section>
+    </aside>
+
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">High ticket ecommerce</p>
+          <h1 id="pageTitle">Generador de briefs</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="secondary" id="exportBtn" type="button">Exportar JSON</button>
+          <label class="import-button">
+            Importar JSON
+            <input id="importInput" type="file" accept="application/json" />
+          </label>
+        </div>
+      </header>
+
+      <section class="view active" id="generatorView">
+        <div class="generator-grid">
+          <form class="workspace-panel input-panel" id="briefForm">
+            <div class="section-heading">
+              <span class="step">01</span>
+              <div>
+                <h2>Intención de la pieza</h2>
+                <p>Completa lo mínimo necesario. El sistema toma el resto del contexto de la marca.</p>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <label>
+                Plataforma
+                <select name="platform">
+                  <option>Instagram</option>
+                  <option>TikTok</option>
+                  <option>YouTube Shorts</option>
+                  <option>Email</option>
+                  <option>LinkedIn</option>
+                </select>
+              </label>
+              <label>
+                Formato
+                <select name="format">
+                  <option>Reel</option>
+                  <option>Carrusel</option>
+                  <option>Stories</option>
+                  <option>Email</option>
+                  <option>Guion UGC</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="field-row">
+              <label>
+                Objetivo
+                <select name="goal">
+                  <option>Generar conciencia</option>
+                  <option>Provocar deseo</option>
+                  <option>Romper objeción</option>
+                  <option>Construir confianza</option>
+                  <option>Cerrar venta</option>
+                </select>
+              </label>
+              <label>
+                Funnel
+                <select name="funnel">
+                  <option>Top of funnel</option>
+                  <option>Middle of funnel</option>
+                  <option>Bottom of funnel</option>
+                  <option>Retargeting</option>
+                </select>
+              </label>
+            </div>
+
+            <label>
+              Dolor o deseo principal
+              <textarea name="pain" rows="3" placeholder="Ej: quiere verse como alguien exitoso sin sentir que está comprando lujo vacío"></textarea>
+            </label>
+
+            <label>
+              Mensaje específico a comunicar
+              <textarea name="message" rows="3" placeholder="Ej: invertir en esta solución evita años de prueba y error con alternativas baratas"></textarea>
+            </label>
+
+            <label>
+              Nivel de conciencia
+              <select name="awareness">
+                <option>No consciente del problema</option>
+                <option>Consciente del problema</option>
+                <option>Consciente de la solución</option>
+                <option>Consciente del producto</option>
+                <option>Más consciente / listo para comprar</option>
+              </select>
+            </label>
+
+            <label>
+              Ángulo creativo
+              <select name="angle">
+                <option>Dolor latente</option>
+                <option>Deseo aspiracional</option>
+                <option>Objeción específica</option>
+                <option>Comparación con opciones baratas</option>
+                <option>Error común del buyer</option>
+                <option>Lifestyle habilitado</option>
+                <option>Historia del fundador</option>
+                <option>Caso de cliente</option>
+                <option>Exclusividad</option>
+                <option>Costo oculto de no comprar</option>
+              </select>
+            </label>
+
+            <div class="field-row compact">
+              <label>
+                Intención de venta
+                <input name="salesIntent" type="range" min="1" max="5" value="3" />
+              </label>
+              <label>
+                Complejidad de producción
+                <select name="production">
+                  <option>Baja</option>
+                  <option>Media</option>
+                  <option>Alta</option>
+                </select>
+              </label>
+            </div>
+
+            <button class="primary full" type="submit">Generar brief estratégico</button>
+          </form>
+
+          <article class="workspace-panel output-panel" id="briefOutput">
+            <div class="empty-state">
+              <span class="empty-icon">+</span>
+              <h2>El brief aparecerá aquí</h2>
+              <p>Selecciona una marca, define intención, conciencia y ángulo. El resultado quedará listo para producción y aprobación.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="projectsView">
+        <div class="projects-layout">
+          <section class="workspace-panel">
+            <div class="section-heading">
+              <span class="step">02</span>
+              <div>
+                <h2>Base de conocimiento</h2>
+                <p>El contexto que hace que cada brief suene como la marca y no como una plantilla.</p>
+              </div>
+            </div>
+            <form id="projectForm" class="knowledge-form"></form>
+          </section>
+          <aside class="workspace-panel">
+            <h2>Diagnóstico del proyecto</h2>
+            <div id="projectDiagnostics" class="diagnostics"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view" id="calendarView">
+        <section class="workspace-panel">
+          <div class="section-heading split">
+            <div>
+              <h2>Calendario de contenido</h2>
+              <p>Piezas aprobadas, prioridad por score y fatiga de ángulos.</p>
+            </div>
+            <button class="secondary" id="seedWeekBtn" type="button">Planear semana</button>
+          </div>
+          <div id="fatigueAlert" class="fatigue-alert hidden"></div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+        </section>
+      </section>
+
+      <section class="view" id="libraryView">
+        <section class="workspace-panel">
+          <div class="section-heading">
+            <span class="step">03</span>
+            <div>
+              <h2>Biblioteca y aprendizaje</h2>
+              <p>Briefs, métricas reales y referencias que alimentan decisiones futuras.</p>
+            </div>
+          </div>
+          <div class="library-toolbar">
+            <input id="librarySearch" type="search" placeholder="Buscar por hook, ángulo o formato" />
+            <select id="libraryFilter">
+              <option value="all">Todas</option>
+              <option value="approved">Aprobadas</option>
+              <option value="published">Publicadas</option>
+              <option value="winner">Ganadoras</option>
+            </select>
+          </div>
+          <div id="libraryList" class="library-list"></div>
+        </section>
+      </section>
+    </main>
+
+    <dialog id="projectDialog">
+      <form method="dialog" class="dialog-card">
+        <h2>Nuevo proyecto</h2>
+        <label>
+          Nombre de la marca
+          <input id="dialogProjectName" placeholder="Ej: Atelier Norte" />
+        </label>
+        <label>
+          Categoría
+          <input id="dialogProjectCategory" placeholder="Ej: muebles premium, coaching ejecutivo, joyería high ticket" />
+        </label>
+        <div class="dialog-actions">
+          <button class="secondary" value="cancel" type="submit">Cancelar</button>
+          <button class="primary" id="createProjectConfirm" value="default" type="button">Crear</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
