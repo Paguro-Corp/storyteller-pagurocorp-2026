@@ -24,6 +24,10 @@
       "dest": "/api/generate-brief.js"
     },
     {
+      "src": "/api/memory",
+      "dest": "/api/memory.js"
+    },
+    {
       "src": "/app.js",
       "dest": "/app.js"
     },

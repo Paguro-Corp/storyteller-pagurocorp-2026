@@ -1,4 +1,6 @@
 const STORAGE_KEY = "paguro-storytelling-os-v1";
+let memorySyncTimer = null;
+let memoryLoaded = false;
 
 const knowledgeFields = [
   ["name", "Nombre de marca", "input"],
@@ -107,6 +109,7 @@ document.addEventListener("DOMContentLoaded", init);
 function init() {
   bindEvents();
   renderAll();
+  hydrateCloudMemory();
 }
 
 function bindEvents() {
@@ -1003,4 +1006,52 @@ function loadState() {
 
 function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  scheduleCloudSave();
+}
+
+async function hydrateCloudMemory() {
+  try {
+    const response = await fetch("/api/memory");
+    if (!response.ok) return;
+
+    const cloudState = await response.json();
+    if (!cloudState || !Array.isArray(cloudState.projects)) {
+      memoryLoaded = true;
+      scheduleCloudSave();
+      return;
+    }
+
+    state = {
+      ...structuredClone(defaultState),
+      ...cloudState
+    };
+    if (!state.activeProjectId || !state.projects.some((project) => project.id === state.activeProjectId)) {
+      state.activeProjectId = state.projects[0]?.id || defaultState.activeProjectId;
+    }
+
+    memoryLoaded = true;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    currentBrief = null;
+    renderAll();
+  } catch {
+    memoryLoaded = true;
+  }
+}
+
+function scheduleCloudSave() {
+  if (!memoryLoaded) return;
+  clearTimeout(memorySyncTimer);
+  memorySyncTimer = setTimeout(syncCloudMemory, 600);
+}
+
+async function syncCloudMemory() {
+  try {
+    await fetch("/api/memory", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(state)
+    });
+  } catch {
+    // localStorage remains the offline fallback if cloud memory is unavailable.
+  }
 }

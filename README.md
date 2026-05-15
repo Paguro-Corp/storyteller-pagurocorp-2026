@@ -43,4 +43,16 @@ $env:OPENAI_MODEL="gpt-4o-mini"
 
 ## Persistencia
 
-Los proyectos, briefs aprobados, calendario y metricas se guardan en `localStorage` del navegador. Para un uso real del equipo, el siguiente paso natural es conectar una base de datos compartida y autenticacion por roles.
+Los proyectos, briefs aprobados, calendario y metricas se guardan en Supabase usando `/api/memory`. `localStorage` queda como respaldo offline del navegador.
+
+Variables de entorno necesarias en Vercel:
+
+```txt
+OPENAI_API_KEY=...
+OPENAI_MODEL=gpt-4o-mini
+SUPABASE_URL=https://uzhkhcxccryjgtslmuji.supabase.co
+SUPABASE_SECRET_KEY=...
+SUPABASE_MEMORY_ID=paguro-storytelling-os
+```
+
+Antes de usar memoria en produccion, ejecuta el SQL de `supabase-schema.sql` en Supabase SQL Editor.
