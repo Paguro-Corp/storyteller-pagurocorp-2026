@@ -257,7 +257,7 @@ function normalizeAiBrief(brief) {
   };
 }
 
-function generateBrief(project, input) {
+function legacyGenerateBrief(project, input) {
   const awareness = awarenessMap[input.awareness];
   const angleStrategy = angleMap[input.angle];
   const pain = input.pain?.trim() || firstSentence(project.pains);
@@ -293,11 +293,11 @@ function generateBrief(project, input) {
   };
 }
 
-function buildInsight(project, input, pain) {
+function legacyBuildInsight(project, input, pain) {
   return `${project.name} debe convertir "${pain}" en una decisión de estatus silencioso: ${angleMap[input.angle]}. La pieza no vende por presión; vende porque le muestra al buyer que seguir improvisando contradice la identidad que quiere construir.`;
 }
 
-function buildHook(project, input, pain) {
+function legacyBuildHook(project, input, pain) {
   const hooks = {
     "Dolor latente": `Lo que realmente te está costando "${pain}" no es dinero. Es criterio.`,
     "Deseo aspiracional": `La diferencia entre comprar algo caro y construir una identidad premium está en esta decisión.`,
@@ -313,7 +313,7 @@ function buildHook(project, input, pain) {
   return hooks[input.angle] || hooks["Dolor latente"];
 }
 
-function buildAltHooks(project, input, pain) {
+function legacyBuildAltHooks(project, input, pain) {
   return [
     `Si ${pain.toLowerCase()}, el problema probablemente no es falta de opciones.`,
     `Antes de invertir en ${project.category}, entiende esta diferencia.`,
@@ -322,7 +322,7 @@ function buildAltHooks(project, input, pain) {
   ];
 }
 
-function selectStoryType(input) {
+function legacySelectStoryType(input) {
   if (input.angle === "Caso de cliente") return "Transformación antes-después-prueba";
   if (input.angle === "Historia del fundador") return "Manifiesto con tensión de mercado";
   if (input.awareness.includes("No consciente")) return "Revelación de problema invisible";
@@ -330,7 +330,7 @@ function selectStoryType(input) {
   return "Tensión, insight, mecanismo, siguiente paso";
 }
 
-function buildScript(project, input, hook, pain, message, awareness, story) {
+function legacyBuildScript(project, input, hook, pain, message, awareness, story) {
   return [
     `Hook: ${hook}`,
     `Tensión: ${pain}. El buyer ya lo siente, pero normalmente lo justifica como falta de tiempo, exceso de opciones o miedo a equivocarse.`,
@@ -342,7 +342,7 @@ function buildScript(project, input, hook, pain, message, awareness, story) {
   ].join("\n\n");
 }
 
-function buildScenes(project, input, hook, pain, message, awareness, angleStrategy) {
+function legacyBuildScenes(project, input, hook, pain, message, awareness, angleStrategy) {
   const isVideo = ["Reel", "Stories", "Guion UGC", "YouTube Shorts", "TikTok"].includes(input.format) || input.platform !== "Email";
   if (!isVideo && input.format === "Email") {
     return [
@@ -362,21 +362,21 @@ function buildScenes(project, input, hook, pain, message, awareness, angleStrate
   ];
 }
 
-function scene(beat, onScreen, direction, broll) {
+function legacyScene(beat, onScreen, direction, broll) {
   return { beat, onScreen, direction, broll };
 }
 
-function buildCaption(project, input, pain, message, awareness) {
+function legacyBuildCaption(project, input, pain, message, awareness) {
   return `${pain}.\n\nEn una decisión high ticket, lo caro no es elegir una solución premium. Lo caro es elegir algo que no sostiene la transformación que querías desde el principio.\n\nEn ${project.name}, la conversación empieza por criterio: qué resultado quieres, qué debes evitar y qué decisión tiene sentido para tu estándar.\n\n${message}\n\n${awareness.cta}.`;
 }
 
-function buildCta(input, awareness, project) {
+function legacyBuildCta(input, awareness, project) {
   if (input.salesIntent >= 4) return `Escribe "CRITERIO" y te mostramos si ${project.name} tiene sentido para tu caso.`;
   if (input.funnel === "Top of funnel") return "Guarda esto antes de tomar una decisión solo por precio.";
   return awareness.cta;
 }
 
-function buildPrompts(project, input, hook, pain) {
+function legacyBuildPrompts(project, input, hook, pain) {
   return {
     chatgpt: `Actúa como estratega senior de contenido high ticket para ${project.name}. Mantén este tono: ${project.voice}. Crea 5 variaciones del hook "${hook}" para ${input.platform}, formato ${input.format}, atacando "${pain}" desde el ángulo "${input.angle}". Evita lenguaje genérico y conserva la autoridad premium.`,
     midjourney: `Premium ecommerce brand ${project.name}, ${project.category}, natural light, editorial composition, tactile materials, quiet luxury, specific buyer tension: ${pain}, no cheap stock look, refined high-ticket visual language`,
