@@ -9,6 +9,6 @@
     "check": "node --check app.js && node --check server.js && node --check prompts.js"
   },
   "engines": {
-    "node": ">=22"
+    "node": "22.x"
   }
 }
