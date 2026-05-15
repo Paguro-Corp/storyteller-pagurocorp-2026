@@ -613,6 +613,7 @@ function recommendation(score) {
 }
 
 function renderBrief(brief) {
+  const isApproved = brief.status === "approved";
   els.briefOutput.innerHTML = `
     <div class="brief-header">
       <div class="brief-title-row">
@@ -623,6 +624,7 @@ function renderBrief(brief) {
         <div class="score-badge"><strong>${brief.score.total}</strong><span>score</span></div>
       </div>
       <div class="recommendation">${escapeHtml(brief.recommendation)}</div>
+      ${isApproved ? `<div class="approval-banner">Brief aprobado y guardado en Biblioteca. Ya puede pasar a produccion o calendario.</div>` : ""}
       <div class="meta-grid">
         ${metaItem("Conciencia", brief.input.awareness)}
         ${metaItem("Ángulo", brief.input.angle)}
@@ -638,15 +640,17 @@ function renderBrief(brief) {
     ${briefSection("Prompts IA", renderPrompts(brief.aiPrompts))}
     ${briefSection("Scoring", renderScore(brief.score))}
     <div class="action-strip">
-      <button class="primary" id="approveBriefBtn" type="button">Aprobar y guardar</button>
+      <button class="primary" id="approveBriefBtn" type="button" ${isApproved ? "disabled" : ""}>${isApproved ? "Aprobado y guardado" : "Aprobar y guardar"}</button>
       <button class="secondary" id="iterateHookBtn" type="button">Regenerar con IA</button>
       <button class="secondary" id="copyBriefBtn" type="button">Copiar brief</button>
+      ${isApproved ? `<button class="secondary" id="goLibraryBtn" type="button">Ver en biblioteca</button>` : ""}
     </div>
   `;
 
-  document.querySelector("#approveBriefBtn").addEventListener("click", approveBrief);
+  if (!isApproved) document.querySelector("#approveBriefBtn").addEventListener("click", approveBrief);
   document.querySelector("#iterateHookBtn").addEventListener("click", regenerateCurrentBriefWithAi);
   document.querySelector("#copyBriefBtn").addEventListener("click", () => navigator.clipboard.writeText(briefToText(brief)));
+  document.querySelector("#goLibraryBtn")?.addEventListener("click", () => switchView("library"));
 }
 
 function renderEmptyBrief() {
@@ -706,9 +710,17 @@ function approveBrief() {
   const project = getActiveProject();
   const existing = project.briefs.find((brief) => brief.id === currentBrief.id);
   currentBrief.status = "approved";
-  if (!existing) project.briefs.unshift(currentBrief);
+  currentBrief.approvedAt = new Date().toISOString();
+  if (existing) {
+    Object.assign(existing, currentBrief);
+  } else {
+    project.briefs.unshift(currentBrief);
+  }
   saveState();
-  renderAll();
+  renderLibrary();
+  renderCalendar();
+  renderDiagnostics();
+  renderBrief(currentBrief);
 }
 
 async function regenerateCurrentBriefWithAi() {
